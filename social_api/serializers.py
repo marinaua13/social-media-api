@@ -37,6 +37,7 @@ class PostListSerializer(PostSerializer):
             "author",
             "content",
             "likes_count",
+            "comments_count",
         )
 
 

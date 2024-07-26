@@ -67,6 +67,10 @@ class AuthTokenSerializer(serializers.Serializer):
 class LogoutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
 
+    default_error_messages = {
+        "invalid_token": "The refresh token is invalid or has already been used."
+    }
+
     def validate(self, attrs):
         self.token = attrs["refresh"]
         return attrs
@@ -74,8 +78,8 @@ class LogoutSerializer(serializers.Serializer):
     def save(self, **kwargs):
         try:
             RefreshToken(self.token).blacklist()
-        except Exception as e:
-            self.fail("invalid token")
+        except Exception:
+            self.fail("invalid_token")
 
 
 class FollowUnfollowSerializer(serializers.Serializer):
